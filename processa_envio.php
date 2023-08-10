@@ -38,7 +38,7 @@
 
     if(!$mensagem->mensagemValida()) {
       echo '<span style="color:red">Mensagem Inválida</span>';      
-    } 
+    }     
 
     $mail = new PHPMailer(true);
 
@@ -54,8 +54,8 @@
         $mail->Port       = 587;                                    //TCP port to connect to; use 587 if you have set `SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS`
 
         //Recipients
-        $mail->setFrom('userwzteste@gmail.com', 'Usuário Remetente');
-        $mail->addAddress('userwzteste@gmail.com', 'Usuário Destinatário');     //Add a recipient
+        $mail->setFrom('userwzteste@gmail.com', 'Fulano Teste Remetente');
+        $mail->addAddress($mensagem->__get('destinatario'), 'Usuário Destinatário');     //Add a recipient
         // $mail->addAddress('ellen@example.com');               //Name is optional
         // $mail->addReplyTo('info@example.com', 'Information');
         // $mail->addCC('cc@example.com');
@@ -67,12 +67,12 @@
 
         //Content
         $mail->isHTML(true);                                  //Set email format to HTML
-        $mail->Subject = 'Assunto Promocional';
-        $mail->Body    = 'Esse é o conteúdo da promoção enviada por <strong>email</strong>';
-        $mail->AltBody = 'Esse é o conteúdo da promoção enviada por email';
+        $mail->Subject = $mensagem->__get('assunto');
+        $mail->Body    = $mensagem->__get('mensagem');
+        $mail->AltBody = 'Para visualizar esse conteúdo será necessário um client com suporte a HTML';
 
         $mail->send();
-        echo 'Message has been sent';
+        echo 'Email enviado com sucesso!';
     } catch (Exception $e) {
         echo "Não foi possível enviar sua mensagem por email. Mailer Error: {$mail->ErrorInfo}";
     }
