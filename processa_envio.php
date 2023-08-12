@@ -12,6 +12,7 @@
       private $destinatario = null;
       private $assunto = null;
       private $mensagem = null;
+      public $status = array('codigo_status' => null, 'descricao_status' => '');
 
       public function __get($attr) {
         return $this->$attr;
@@ -37,7 +38,8 @@
     $mensagem->__set('mensagem', $_POST['mensagem']);
 
     if(!$mensagem->mensagemValida()) {
-      echo '<span style="color:red">Mensagem Inválida</span>';      
+      echo '<span style="color:red">Mensagem Inválida</span>'; 
+      header('Location: index.php');     
     }     
 
     $mail = new PHPMailer(true);
@@ -72,9 +74,14 @@
         $mail->AltBody = 'Para visualizar esse conteúdo será necessário um client com suporte a HTML';
 
         $mail->send();
-        echo 'Email enviado com sucesso!';
+
+        $mensagem->status['codigo_status'] = 1;
+        $mensagem->status['descricao_status'] = 'Email enviado com sucesso!';
+        
     } catch (Exception $e) {
-        echo "Não foi possível enviar sua mensagem por email. Mailer Error: {$mail->ErrorInfo}";
+        $mensagem->status['codigo_status'] = 2;
+        $mensagem->status['descricao_status'] = 'Não foi possível enviar sua mensagem. Por favor tente mais tarde. Detalhe do Error: ' . $mail->ErrorInfo;
+        
     }
 
 ?>
