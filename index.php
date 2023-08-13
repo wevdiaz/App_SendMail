@@ -9,6 +9,12 @@
 
 	<body>
 
+		<?php if(isset($_GET['error'])) { ?>
+			<div class="bg-danger text-white d-flex justify-content-center" id="messageError">
+				<p class="mt-2">Atenção, preencha todos os campos antes do envio!</p>
+			</div>
+		<?php } ?>
+
 		<div class="container">  
 
 			<div class="py-3 text-center">
@@ -44,5 +50,16 @@
       		</div>
       	</div>
 
+				<script>
+					const messageError = document.getElementById("messageError");
+					console.log(messageError);
+
+					if (messageError) {
+						setTimeout(() => {
+							messageError.classList.remove("d-flex");
+							messageError.classList.add("d-none");
+						}, 3000);
+					}
+				</script>
 	</body>
 </html>
